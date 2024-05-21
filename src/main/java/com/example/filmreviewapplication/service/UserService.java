@@ -1,10 +1,10 @@
 package com.example.filmreviewapplication.service;
 
+import com.example.filmreviewapplication.model.entity.UserProfile;
 import com.example.filmreviewapplication.repository.UserRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.apache.catalina.User;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -14,10 +14,14 @@ public class UserService {
 
     UserRepository userRepository;
 
-    public User createUser(User user) {
+    public UserProfile createUser(UserProfile userProfile) {
 
-        var newUser = userRepository.save(user);
-        return newUser;
+        var newUserProfile = userRepository.save(userProfile);
+        return newUserProfile;
 
+    }
+
+    public UserProfile getUserProfile(Long id) {
+        return userRepository.findById(id).orElseThrow(RuntimeException::new);
     }
 }
