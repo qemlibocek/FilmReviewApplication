@@ -23,11 +23,27 @@ public class UserController {
         return ResponseEntity.ok().body(newUserProfile);
     }
 
-    @GetMapping
+    @GetMapping("/byId")
 
-    public ResponseEntity<UserProfile> getUserProfile(@RequestParam Long id){
+    public ResponseEntity<UserProfile> getUserProfileById(@RequestParam Long id){
 
-        UserProfile userProfile = userService.getUserProfile(id);
+        UserProfile userProfile = userService.getUserProfileById(id);
+        return ResponseEntity.ok().body(userProfile);
+    }
+
+    @GetMapping("/byUsername")
+
+    public ResponseEntity<UserProfile> getUserProfileByUsername(@RequestParam String username){
+
+        UserProfile userProfile = userService.getUserProfileByUsername(username);
+        return ResponseEntity.ok().body(userProfile);
+    }
+
+    @GetMapping("/byPhoneNumber")
+
+    public ResponseEntity<UserProfile> getUserProfileByPhoneNumber(@RequestParam String phoneNumber){
+
+        UserProfile userProfile = userService.getUserProfileByPhoneNumber(phoneNumber);
         return ResponseEntity.ok().body(userProfile);
     }
 }

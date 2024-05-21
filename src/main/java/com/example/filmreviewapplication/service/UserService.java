@@ -21,7 +21,19 @@ public class UserService {
 
     }
 
-    public UserProfile getUserProfile(Long id) {
-        return userRepository.findById(id).orElseThrow(RuntimeException::new);
+    public UserProfile getUserProfileById(Long id) {
+
+        return userRepository.findById(id)
+                .orElseThrow(() ->new RuntimeException("User not found"));
+    }
+
+    public  UserProfile getUserProfileByUsername(String username) {
+
+        return  userRepository.findByUsername(username).orElseThrow(() ->new RuntimeException("User not found"));
+    }
+
+    public  UserProfile getUserProfileByPhoneNumber(String phoneNumber) {
+
+       return userRepository.findByPhoneNumber(phoneNumber).orElseThrow(() ->new RuntimeException("User not found"));
     }
 }
