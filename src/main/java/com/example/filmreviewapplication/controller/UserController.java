@@ -46,4 +46,12 @@ public class UserController {
         UserProfile userProfile = userService.getUserProfileByPhoneNumber(phoneNumber);
         return ResponseEntity.ok().body(userProfile);
     }
+
+    @DeleteMapping("/byId")
+
+    public ResponseEntity<Void> deleteUserProfileById(@RequestParam Long id){
+
+        userService.deleteUserById(id);
+        return ResponseEntity.noContent().build();
+    }
 }

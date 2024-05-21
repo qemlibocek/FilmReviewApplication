@@ -24,16 +24,25 @@ public class UserService {
     public UserProfile getUserProfileById(Long id) {
 
         return userRepository.findById(id)
-                .orElseThrow(() ->new RuntimeException("User not found"));
+                .orElseThrow(() -> new RuntimeException("User not found"));
     }
 
-    public  UserProfile getUserProfileByUsername(String username) {
+    public UserProfile getUserProfileByUsername(String username) {
 
-        return  userRepository.findByUsername(username).orElseThrow(() ->new RuntimeException("User not found"));
+        return userRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("User not found"));
     }
 
-    public  UserProfile getUserProfileByPhoneNumber(String phoneNumber) {
+    public UserProfile getUserProfileByPhoneNumber(String phoneNumber) {
 
-       return userRepository.findByPhoneNumber(phoneNumber).orElseThrow(() ->new RuntimeException("User not found"));
+        return userRepository.findByPhoneNumber(phoneNumber).orElseThrow(() -> new RuntimeException("User not found"));
+    }
+
+    public void deleteUserById(Long id) {
+
+        if (userRepository.existsById(id)) {
+            userRepository.deleteById(id);
+        } else {
+            throw new RuntimeException("User not found");
+        }
     }
 }
