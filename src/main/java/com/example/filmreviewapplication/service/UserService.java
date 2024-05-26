@@ -45,4 +45,20 @@ public class UserService {
             throw new RuntimeException("User not found");
         }
     }
+
+    public UserProfile updateUser(Long id, UserProfile updatedUserProfile) {
+
+        return userRepository.findById(id).map(existingUser -> {
+
+            existingUser.setFirstName(updatedUserProfile.getFirstName());
+            existingUser.setLastName(updatedUserProfile.getLastName());
+            existingUser.setPhoneNumber(updatedUserProfile.getPhoneNumber());
+            existingUser.setPassword(updatedUserProfile.getPassword());
+            existingUser.setCountry(updatedUserProfile.getCountry());
+            existingUser.setAge(updatedUserProfile.getAge());
+            existingUser.setUsername(updatedUserProfile.getUsername());
+            return userRepository.save(existingUser);
+        })
+                .orElseThrow(() -> new RuntimeException("User not found"));
+    }
 }

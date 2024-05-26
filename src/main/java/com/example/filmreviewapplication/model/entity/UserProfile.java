@@ -5,13 +5,12 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-
 import java.time.LocalDateTime;
 
-@Table(name = "user_Profiles")
 @Entity
 @Getter
 @Setter
+@Table(name = "user_profiles")
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserProfile {
 
@@ -34,6 +33,7 @@ public class UserProfile {
     String country;
 
     @CreationTimestamp
+    @Column(updatable = false)
     LocalDateTime createdAt;
     @UpdateTimestamp
     LocalDateTime updatedAt;

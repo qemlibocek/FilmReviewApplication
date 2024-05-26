@@ -54,4 +54,14 @@ public class UserController {
         userService.deleteUserById(id);
         return ResponseEntity.noContent().build();
     }
+
+    @PutMapping
+    public ResponseEntity<Void> updateUserProfile(@RequestBody UserProfile userProfile){
+
+        userService.updateUser(userProfile.getId(), userProfile);
+        return ResponseEntity.noContent().build();
+    }
+
+
+
 }
