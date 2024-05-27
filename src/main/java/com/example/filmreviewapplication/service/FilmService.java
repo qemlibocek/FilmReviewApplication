@@ -17,6 +17,14 @@ public class FilmService {
     FilmRepository filmRepository;
 
     public List<Film> getAllFilms(){
+
         return filmRepository.findAll();
+    }
+
+    public Film addFilm(Film film){
+
+        var newFilm = filmRepository.save(film);
+        return newFilm;
+
     }
 }
