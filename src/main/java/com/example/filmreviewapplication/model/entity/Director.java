@@ -12,9 +12,9 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @Setter
-@Table(name = "films")
+@Table(name = "directors")
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Film {
+public class Director {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,7 +22,8 @@ public class Film {
     Long id;
     @Column(nullable = false)
     String name;
-    Float score;
+    @Column(nullable = false)
+    String surname;
 
     @CreationTimestamp
     @Column(updatable = false)
