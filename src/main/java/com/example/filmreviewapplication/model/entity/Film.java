@@ -23,6 +23,8 @@ public class Film {
     @Column(nullable = false)
     String name;
     Float score;
+    @Enumerated(EnumType.STRING)
+    Genre genre;
 
     @CreationTimestamp
     @Column(updatable = false)
