@@ -32,6 +32,10 @@ public class UserProfile {
     String phoneNumber;
     String country;
 
+    @OneToOne
+    @JoinColumn(name = "user_types_id", nullable = false)
+    UserType userType;
+
     @CreationTimestamp
     @Column(updatable = false)
     LocalDateTime createdAt;
