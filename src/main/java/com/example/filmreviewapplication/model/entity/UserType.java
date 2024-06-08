@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Table(name = "user_types")
-@SQLRestriction("active = true")
+@SQLRestriction("is_active = true")
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserType {
 

@@ -26,10 +26,16 @@ public class Film {
     @Enumerated(EnumType.STRING)
     Genre genre;
 
+    @ManyToOne
+    @JoinColumn(name = "publication_year_id", referencedColumnName = "id", nullable = false)
+    PublicationYear publicationYear;
+
     @CreationTimestamp
     @Column(updatable = false)
     LocalDateTime createdAt;
     @UpdateTimestamp
     LocalDateTime updatedAt;
+
+    Boolean isActive = true;
 
 }

@@ -32,4 +32,24 @@ public class FilmController {
         Film newFilm = filmService.addFilm(film);
         return ResponseEntity.ok().body(newFilm);
     }
+
+    @GetMapping("/id")
+    public ResponseEntity<Film> getFilmById(@RequestParam Long id){
+        Film film = filmService.getFilmById(id);
+        return ResponseEntity.ok().body(film);
+    }
+
+    @PutMapping
+    public ResponseEntity<Film> updateFilm(@RequestBody Film film){
+
+        var newFilm = filmService.updateFilm(film, film.getId());
+        return ResponseEntity.ok().body(newFilm);
+    }
+
+    @DeleteMapping
+    public ResponseEntity<Film> deleteFilmById(@RequestParam Long id){
+
+        filmService.deleteFilm(id);
+        return ResponseEntity.noContent().build();
+    }
 }

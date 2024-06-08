@@ -5,7 +5,6 @@ import com.example.filmreviewapplication.repository.UserTypeRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.antlr.v4.runtime.misc.NotNull;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -34,7 +33,7 @@ public class UserTypeService {
                 .orElseThrow(() -> new RuntimeException("User type not found"));
     }
 
-    public void deleteUserTypeById(Long id) {
+    public void deleteUserTypeById(Long id){
 
         UserType userTypeToDelete = userTypeRepository
 
@@ -42,6 +41,7 @@ public class UserTypeService {
                 .orElseThrow(() -> new RuntimeException("User type not found"));
 
         userTypeToDelete.setIsActive(false);
+        userTypeRepository.save(userTypeToDelete);
 
     }
 
