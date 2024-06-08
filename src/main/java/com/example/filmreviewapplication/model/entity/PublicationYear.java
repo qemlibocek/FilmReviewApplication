@@ -28,4 +28,6 @@ public class PublicationYear {
     LocalDateTime createdAt;
     @UpdateTimestamp
     LocalDateTime updatedAt;
+
+    Boolean isActive = true;
 }

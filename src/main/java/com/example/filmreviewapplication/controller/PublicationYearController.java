@@ -6,9 +6,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -27,5 +25,32 @@ public class PublicationYearController {
         return ResponseEntity.ok().body(publicationYearList);
     }
 
+    @GetMapping("/id")
+    public ResponseEntity<PublicationYear> getPublicationYearById(@RequestParam Long id) {
+
+        PublicationYear publicationYear = publicationYearService.getPublicationYearById(id);
+        return ResponseEntity.ok().body(publicationYear);
+    }
+
+    @PutMapping
+    public ResponseEntity<PublicationYear> updatePublicationYear(@RequestBody PublicationYear publicationYear) {
+
+        PublicationYear newPubYear = publicationYearService.updatePublicationYear(publicationYear, publicationYear.getId());
+        return ResponseEntity.ok().body(newPubYear);
+    }
+
+    @DeleteMapping
+    public ResponseEntity<PublicationYear> deletePublicationYear(@RequestParam Long id) {
+
+        publicationYearService.deletePublicationYear(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping
+    public ResponseEntity<PublicationYear> createPublicationYear(@RequestBody PublicationYear publicationYear) {
+
+        PublicationYear newPubYear = publicationYearService.createPublicationYear(publicationYear);
+        return ResponseEntity.ok().body(newPubYear);
+    }
 
 }
