@@ -5,12 +5,14 @@ import com.example.filmreviewapplication.repository.ActorRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.hibernate.annotations.SQLRestriction;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
+@SQLRestriction("is_active = true")
 @RequiredArgsConstructor
 public class ActorService {
 

@@ -5,10 +5,13 @@ import com.example.filmreviewapplication.repository.UserRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.hibernate.annotations.SQLRestriction;
 import org.springframework.stereotype.Service;
+
 
 @Service
 @RequiredArgsConstructor
+@SQLRestriction("is_active = true")
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class UserService {
 
@@ -38,12 +41,10 @@ public class UserService {
     }
 
     public void deleteUserById(Long id) {
-
-        if (userRepository.existsById(id)) {
-            userRepository.deleteById(id);
-        } else {
-            throw new RuntimeException("User not found");
-        }
+         var userProfile = userRepository.findById(id)
+                 .orElseThrow(() -> new RuntimeException("User not found"));
+         userProfile.setIsActive(false);
+         userRepository.save(userProfile);
     }
 
     public UserProfile updateUser(Long id, UserProfile updatedUserProfile) {

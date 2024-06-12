@@ -31,4 +31,6 @@ public class Director {
     @UpdateTimestamp
     LocalDateTime updatedAt;
 
+    Boolean isActive = true;
+
 }

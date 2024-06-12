@@ -5,6 +5,7 @@ import com.example.filmreviewapplication.repository.PublicationYearRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.hibernate.annotations.SQLRestriction;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,6 +14,7 @@ import java.util.Objects;
 @Service
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 @RequiredArgsConstructor
+@SQLRestriction("is_active = true")
 public class PublicationYearService {
 
     PublicationYearRepository publicationYearRepository;

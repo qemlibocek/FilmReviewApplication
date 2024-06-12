@@ -5,6 +5,7 @@ import com.example.filmreviewapplication.repository.UserTypeRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.hibernate.annotations.SQLRestriction;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,6 +14,7 @@ import java.util.Objects;
 @Service
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @RequiredArgsConstructor
+@SQLRestriction("is_active = true")
 public class UserTypeService {
 
     UserTypeRepository userTypeRepository;
