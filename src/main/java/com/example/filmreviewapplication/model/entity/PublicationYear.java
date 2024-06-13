@@ -9,6 +9,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Getter
@@ -23,6 +24,9 @@ public class PublicationYear {
     Long id;
     @Column(nullable = false)
     Integer year;
+
+    @OneToMany(mappedBy = "publicationYear", cascade = CascadeType.ALL)
+    List<Film> films;
 
     @CreationTimestamp
     LocalDateTime createdAt;

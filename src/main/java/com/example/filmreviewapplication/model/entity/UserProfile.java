@@ -32,7 +32,7 @@ public class UserProfile {
     String phoneNumber;
     String country;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_types_id", nullable = false)
     UserType userType;
 

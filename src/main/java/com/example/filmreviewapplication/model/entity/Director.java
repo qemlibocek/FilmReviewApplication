@@ -8,6 +8,7 @@ import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Getter
@@ -24,6 +25,9 @@ public class Director {
     String name;
     @Column(nullable = false)
     String surname;
+
+    @OneToMany(mappedBy = "director", cascade = CascadeType.ALL)
+    List<Film> films;
 
     @CreationTimestamp
     @Column(updatable = false)

@@ -1,4 +1,4 @@
-package com.example.filmreviewapplication.model.entity;
+package com.example.filmreviewapplication.model.enums;
 
 public enum Genre {
 

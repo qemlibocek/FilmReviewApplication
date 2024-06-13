@@ -8,6 +8,7 @@ import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Getter
@@ -25,6 +26,9 @@ public class Actor {
     @Column(nullable = false)
     String surname;
 
+    @ManyToMany(mappedBy = "actors", cascade = CascadeType.ALL)
+    List<Film> films;
+
     @UpdateTimestamp
     LocalDateTime updatedAt;
     @CreationTimestamp
@@ -32,4 +36,5 @@ public class Actor {
     LocalDateTime createdAt;
 
     Boolean isActive = true;
+
 }

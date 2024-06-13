@@ -23,6 +23,10 @@ public class UserType {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long user_types_id;
     String name;
+
+    @OneToOne(mappedBy = "userType", cascade = CascadeType.ALL)
+    UserProfile userProfile;
+
     @CreationTimestamp
     LocalDateTime createdAt;
     @UpdateTimestamp

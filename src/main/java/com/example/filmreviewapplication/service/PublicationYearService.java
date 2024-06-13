@@ -56,6 +56,5 @@ public class PublicationYearService {
             return publicationYearToUpdate;
         }
         return publicationYearToUpdate;
-
     }
 }
