@@ -30,4 +30,6 @@ public class Actor {
     @CreationTimestamp
     @Column(updatable = false)
     LocalDateTime createdAt;
+
+    Boolean isActive = true;
 }

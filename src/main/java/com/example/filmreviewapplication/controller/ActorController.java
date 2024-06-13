@@ -1,16 +1,12 @@
 package com.example.filmreviewapplication.controller;
 
 import com.example.filmreviewapplication.model.entity.Actor;
-import com.example.filmreviewapplication.model.entity.Director;
 import com.example.filmreviewapplication.service.ActorService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
@@ -28,7 +24,31 @@ public class ActorController {
         return ResponseEntity.ok().body(actorList);
     }
 
+    @GetMapping("/id")
+    public ResponseEntity<Actor> getActorById(@RequestParam Long id){
 
+        Actor actor = actorService.getActorById(id);
+        return ResponseEntity.ok().body(actor);
+    }
 
+    @PutMapping
+    public ResponseEntity<Actor> updateActor(@RequestBody Actor actor){
 
+        Actor actorForUpdate = actorService.updateActor(actor.getId(), actor);
+        return ResponseEntity.ok().body(actorForUpdate);
+    }
+
+    @PostMapping
+    public ResponseEntity<Actor> createActor(@RequestBody Actor actor){
+
+        Actor actorForCreation = actorService.createActor(actor);
+        return ResponseEntity.ok().body(actorForCreation);
+    }
+
+    @DeleteMapping
+    public ResponseEntity<Actor> deleteActor(@RequestParam Long id){
+
+        actorService.deleteActor(id);
+        return ResponseEntity.noContent().build();
+    }
 }

@@ -14,6 +14,7 @@ import java.util.Objects;
 @Service
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 @SQLRestriction("is_active = true")
+
 @RequiredArgsConstructor
 public class DirectorService {
 
