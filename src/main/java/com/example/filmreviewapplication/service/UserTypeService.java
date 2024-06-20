@@ -1,5 +1,7 @@
 package com.example.filmreviewapplication.service;
 
+import com.example.filmreviewapplication.dto.UserTypeDTO;
+import com.example.filmreviewapplication.mapper.UserTypeMapper;
 import com.example.filmreviewapplication.model.entity.UserType;
 import com.example.filmreviewapplication.repository.UserTypeRepository;
 import lombok.AccessLevel;
@@ -19,23 +21,27 @@ public class UserTypeService {
 
     UserTypeRepository userTypeRepository;
 
-    public UserType createUserType(UserType userType) {
+    public UserTypeDTO createUserType(UserTypeDTO userTypeDto) {
 
-        return userTypeRepository.save(userType);
+        UserType userType = UserTypeMapper.toEntity(userTypeDto);
+        userTypeRepository.save(userType);
+        return UserTypeMapper.toUserTypeDTO(userType);
     }
 
-    public List<UserType> getAllUserTypes() {
+    public List<UserTypeDTO> getAllUserTypes() {
 
-        return userTypeRepository.findAll();
+        List<UserType> userTypes = userTypeRepository.findAll();
+        return UserTypeMapper.toListUserTypeDTO(userTypes);
     }
 
-    public UserType getUserTypeById(Long id) {
+    public UserTypeDTO getUserTypeById(Long id) {
 
-        return userTypeRepository.findById(id)
+        UserType userType = userTypeRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User type not found"));
+        return UserTypeMapper.toUserTypeDTO(userType);
     }
 
-    public void deleteUserTypeById(Long id){
+    public void deleteUserTypeById(Long id) {
 
         UserType userTypeToDelete = userTypeRepository
 
@@ -47,21 +53,21 @@ public class UserTypeService {
 
     }
 
-    public UserType updateUserType (Long id, UserType userType){
+    public UserTypeDTO updateUserType(Long id, UserTypeDTO userTypeDto) {
 
         UserType userTypeToUpdate = userTypeRepository
                 .findById(id)
                 .orElseThrow(() -> new RuntimeException("User type not found"));
 
-        if (Objects.nonNull(userTypeToUpdate)){
+        if (Objects.nonNull(userTypeToUpdate)) {
 
-            userTypeToUpdate.setName(userType.getName());
+            userTypeToUpdate.setName(userTypeDto.getName());
             userTypeRepository.save(userTypeToUpdate);
 
-            return userTypeToUpdate;
+            return UserTypeMapper.toUserTypeDTO(userTypeToUpdate);
         }
 
-        return userTypeToUpdate;
+        return  UserTypeMapper.toUserTypeDTO(userTypeToUpdate);
 
     }
 }

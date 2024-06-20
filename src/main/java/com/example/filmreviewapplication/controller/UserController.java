@@ -22,7 +22,7 @@ public class UserController {
 
     public ResponseEntity<UserProfileDTO> createUserProfile(@RequestBody UserProfileDTO userProfileDto) {
 
-        UserProfileDTO createdUserProfile = userService.createUser(userProfileDto);
+        var createdUserProfile = userService.createUser(userProfileDto);
         return ResponseEntity.ok().body(createdUserProfile);
     }
 
