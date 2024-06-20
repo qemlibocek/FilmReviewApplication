@@ -1,10 +1,12 @@
 package com.example.filmreviewapplication.controller;
 
+import com.example.filmreviewapplication.dto.UserProfileDTO;
 import com.example.filmreviewapplication.model.entity.UserProfile;
 import com.example.filmreviewapplication.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.AccessLevel;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,33 +20,34 @@ public class UserController {
 
     @PostMapping
 
-    public ResponseEntity<UserProfile> createUserProfile(@RequestBody UserProfile userProfile) {
-        UserProfile newUserProfile = userService.createUser(userProfile);
-        return ResponseEntity.ok().body(newUserProfile);
+    public ResponseEntity<UserProfileDTO> createUserProfile(@RequestBody UserProfileDTO userProfileDto) {
+
+        UserProfileDTO createdUserProfile = userService.createUser(userProfileDto);
+        return ResponseEntity.ok().body(createdUserProfile);
     }
 
     @GetMapping("/byId")
 
-    public ResponseEntity<UserProfile> getUserProfileById(@RequestParam Long id){
+    public ResponseEntity<UserProfileDTO> getUserProfileById(@RequestParam Long id){
 
-        UserProfile userProfile = userService.getUserProfileById(id);
-        return ResponseEntity.ok().body(userProfile);
+        UserProfileDTO userProfileDto = userService.getUserProfileById(id);
+        return ResponseEntity.ok().body(userProfileDto);
     }
 
     @GetMapping("/byUsername")
 
-    public ResponseEntity<UserProfile> getUserProfileByUsername(@RequestParam String username){
+    public ResponseEntity<UserProfileDTO> getUserProfileByUsername(@RequestParam String username){
 
-        UserProfile userProfile = userService.getUserProfileByUsername(username);
-        return ResponseEntity.ok().body(userProfile);
+        UserProfileDTO userProfileDTO = userService.getUserProfileByUsername(username);
+        return ResponseEntity.ok().body(userProfileDTO);
     }
 
     @GetMapping("/byPhoneNumber")
 
-    public ResponseEntity<UserProfile> getUserProfileByPhoneNumber(@RequestParam String phoneNumber){
+    public ResponseEntity<UserProfileDTO> getUserProfileByPhoneNumber(@RequestParam String phoneNumber){
 
-        UserProfile userProfile = userService.getUserProfileByPhoneNumber(phoneNumber);
-        return ResponseEntity.ok().body(userProfile);
+        UserProfileDTO userProfileDTO = userService.getUserProfileByPhoneNumber(phoneNumber);
+        return ResponseEntity.ok().body(userProfileDTO);
     }
 
     @DeleteMapping("/byId")
@@ -56,12 +59,9 @@ public class UserController {
     }
 
     @PutMapping
-    public ResponseEntity<Void> updateUserProfile(@RequestBody UserProfile userProfile){
+    public ResponseEntity<Void> updateUserProfile(@RequestBody UserProfileDTO userProfileDto){
 
-        userService.updateUser(userProfile.getId(), userProfile);
+        userService.updateUser(userProfileDto.getId(), userProfileDto);
         return ResponseEntity.noContent().build();
     }
-
-
-
 }

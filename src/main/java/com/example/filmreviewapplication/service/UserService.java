@@ -1,10 +1,15 @@
 package com.example.filmreviewapplication.service;
 
+import com.example.filmreviewapplication.dto.UserProfileDTO;
+import com.example.filmreviewapplication.mapper.UserProfileMapper;
 import com.example.filmreviewapplication.model.entity.UserProfile;
+import com.example.filmreviewapplication.model.entity.UserType;
 import com.example.filmreviewapplication.repository.UserRepository;
+import com.example.filmreviewapplication.repository.UserTypeRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.apache.catalina.User;
 import org.hibernate.annotations.SQLRestriction;
 import org.springframework.stereotype.Service;
 
@@ -16,50 +21,57 @@ import org.springframework.stereotype.Service;
 public class UserService {
 
     UserRepository userRepository;
+    UserTypeRepository userTypeRepository;
 
-    public UserProfile createUser(UserProfile userProfile) {
+    public UserProfileDTO createUser(UserProfileDTO userProfileDTO) {
 
-        var newUserProfile = userRepository.save(userProfile);
-        return newUserProfile;
-
+        UserType userType = userTypeRepository.findById(userProfileDTO.getUserTypeId())
+                .orElseThrow(() -> new RuntimeException("UserType not found"));
+        UserProfile userProfile = UserProfileMapper.toEntity(userProfileDTO, userType);
+        UserProfile savedUserProfile = userRepository.save(userProfile);
+        return UserProfileMapper.toUserProfileDTO(savedUserProfile);
     }
 
-    public UserProfile getUserProfileById(Long id) {
+    public UserProfileDTO getUserProfileById(Long id) {
 
-        return userRepository.findById(id)
+        UserProfile userProfile = userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found"));
+        return UserProfileMapper.toUserProfileDTO(userProfile);
     }
 
-    public UserProfile getUserProfileByUsername(String username) {
+    public UserProfileDTO getUserProfileByUsername(String username) {
 
-        return userRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("User not found"));
+        UserProfile userProfile = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        return UserProfileMapper.toUserProfileDTO(userProfile);
     }
 
-    public UserProfile getUserProfileByPhoneNumber(String phoneNumber) {
-
-        return userRepository.findByPhoneNumber(phoneNumber).orElseThrow(() -> new RuntimeException("User not found"));
+    public UserProfileDTO getUserProfileByPhoneNumber(String phoneNumber) {
+        UserProfile userProfile = userRepository.findByPhoneNumber(phoneNumber)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        return UserProfileMapper.toUserProfileDTO(userProfile);
     }
 
     public void deleteUserById(Long id) {
-         var userProfile = userRepository.findById(id)
-                 .orElseThrow(() -> new RuntimeException("User not found"));
-         userProfile.setIsActive(false);
-         userRepository.save(userProfile);
+        var userProfile = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        userProfile.setIsActive(false);
+        userRepository.save(userProfile);
     }
 
-    public UserProfile updateUser(Long id, UserProfile updatedUserProfile) {
+    public UserProfile updateUser(Long id, UserProfileDTO updatedUserProfileDTO) {
 
         return userRepository.findById(id).map(existingUser -> {
 
-            existingUser.setFirstName(updatedUserProfile.getFirstName());
-            existingUser.setLastName(updatedUserProfile.getLastName());
-            existingUser.setPhoneNumber(updatedUserProfile.getPhoneNumber());
-            existingUser.setPassword(updatedUserProfile.getPassword());
-            existingUser.setCountry(updatedUserProfile.getCountry());
-            existingUser.setAge(updatedUserProfile.getAge());
-            existingUser.setUsername(updatedUserProfile.getUsername());
-            return userRepository.save(existingUser);
-        })
+                    existingUser.setFirstName(updatedUserProfileDTO.getFirstName());
+                    existingUser.setLastName(updatedUserProfileDTO.getLastName());
+                    existingUser.setPhoneNumber(updatedUserProfileDTO.getPhoneNumber());
+                    existingUser.setPassword(updatedUserProfileDTO.getPassword());
+                    existingUser.setCountry(updatedUserProfileDTO.getCountry());
+                    existingUser.setAge(updatedUserProfileDTO.getAge());
+                    existingUser.setUsername(updatedUserProfileDTO.getUsername());
+                    return userRepository.save(existingUser);
+                })
                 .orElseThrow(() -> new RuntimeException("User not found"));
     }
 }
