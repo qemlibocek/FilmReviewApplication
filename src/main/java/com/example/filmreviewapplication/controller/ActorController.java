@@ -1,5 +1,6 @@
 package com.example.filmreviewapplication.controller;
 
+import com.example.filmreviewapplication.dto.ActorDTO;
 import com.example.filmreviewapplication.model.entity.Actor;
 import com.example.filmreviewapplication.service.ActorService;
 import lombok.AccessLevel;
@@ -18,36 +19,31 @@ public class ActorController {
     ActorService actorService;
 
     @GetMapping
-    public ResponseEntity<List<Actor>> getAllActors (){
-
-        List<Actor> actorList = actorService.getAllActors();
+    public ResponseEntity<List<ActorDTO>> getAllActors() {
+        List<ActorDTO> actorList = actorService.getAllActors();
         return ResponseEntity.ok().body(actorList);
     }
 
-    @GetMapping("/id")
-    public ResponseEntity<Actor> getActorById(@RequestParam Long id){
-
-        Actor actor = actorService.getActorById(id);
+    @GetMapping("/{id}")
+    public ResponseEntity<ActorDTO> getActorById(@PathVariable Long id) {
+        ActorDTO actor = actorService.getActorById(id);
         return ResponseEntity.ok().body(actor);
     }
 
-    @PutMapping
-    public ResponseEntity<Actor> updateActor(@RequestBody Actor actor){
-
-        Actor actorForUpdate = actorService.updateActor(actor.getId(), actor);
-        return ResponseEntity.ok().body(actorForUpdate);
+    @PutMapping("/{id}")
+    public ResponseEntity<ActorDTO> updateActor(@PathVariable Long id, @RequestBody ActorDTO actorDTO) {
+        ActorDTO updatedActor = actorService.updateActor(id, actorDTO);
+        return ResponseEntity.ok().body(updatedActor);
     }
 
     @PostMapping
-    public ResponseEntity<Actor> createActor(@RequestBody Actor actor){
-
-        Actor actorForCreation = actorService.createActor(actor);
-        return ResponseEntity.ok().body(actorForCreation);
+    public ResponseEntity<ActorDTO> createActor(@RequestBody ActorDTO actorDTO) {
+        ActorDTO createdActor = actorService.createActor(actorDTO);
+        return ResponseEntity.ok().body(createdActor);
     }
 
-    @DeleteMapping
-    public ResponseEntity<Actor> deleteActor(@RequestParam Long id){
-
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteActor(@PathVariable Long id) {
         actorService.deleteActor(id);
         return ResponseEntity.noContent().build();
     }

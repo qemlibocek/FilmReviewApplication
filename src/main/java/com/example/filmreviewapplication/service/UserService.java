@@ -9,7 +9,6 @@ import com.example.filmreviewapplication.repository.UserTypeRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.apache.catalina.User;
 import org.hibernate.annotations.SQLRestriction;
 import org.springframework.stereotype.Service;
 

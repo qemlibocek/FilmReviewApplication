@@ -1,6 +1,12 @@
 package com.example.filmreviewapplication.service;
 
+import com.example.filmreviewapplication.dto.PublicationYearDTO;
+import com.example.filmreviewapplication.mapper.DirectorMapper;
+import com.example.filmreviewapplication.mapper.PublicationYearMapper;
+import com.example.filmreviewapplication.model.entity.Director;
+import com.example.filmreviewapplication.model.entity.Film;
 import com.example.filmreviewapplication.model.entity.PublicationYear;
+import com.example.filmreviewapplication.repository.FilmRepository;
 import com.example.filmreviewapplication.repository.PublicationYearRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -18,22 +24,31 @@ import java.util.Objects;
 public class PublicationYearService {
 
     PublicationYearRepository publicationYearRepository;
+    FilmRepository filmRepository;
 
-    public List<PublicationYear> getAllPublicationYears() {
+    public List<PublicationYearDTO> getAllPublicationYears() {
 
-        return publicationYearRepository.findAll();
+        return PublicationYearMapper.toListPublicationYearDTO(publicationYearRepository.findAll());
     }
 
-    public PublicationYear getPublicationYearById(Long id) {
+    public PublicationYearDTO getPublicationYearById(Long id) {
 
         PublicationYear publicationYear = publicationYearRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Publication Year Not Found"));
-        return publicationYear;
+
+        return PublicationYearMapper.toPublicationYearDTO(publicationYear);
     }
 
-    public PublicationYear createPublicationYear(PublicationYear publicationYear) {
+    public PublicationYearDTO createPublicationYear(PublicationYearDTO publicationYearDTO) {
+        List<Film> films = publicationYearDTO.getFilmIds().stream()
+                .map(filmId -> filmRepository.findById(filmId)
+                        .orElseThrow(() -> new RuntimeException("Film not found")))
+                .toList();
 
-        return publicationYearRepository.save(publicationYear);
+        PublicationYear publicationYear = PublicationYearMapper.toEntity(publicationYearDTO, films);
+        publicationYear = publicationYearRepository.save(publicationYear);
+
+        return PublicationYearMapper.toPublicationYearDTO(publicationYear);
     }
 
     public void deletePublicationYear(Long id) {
@@ -45,16 +60,16 @@ public class PublicationYearService {
         publicationYearRepository.save(publicationYear);
     }
 
-    public PublicationYear updatePublicationYear(PublicationYear publicationYear, Long id) {
+    public PublicationYearDTO updatePublicationYear(PublicationYearDTO publicationYearDTO, Long id) {
 
         PublicationYear publicationYearToUpdate = publicationYearRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Publication Year Not Found"));
 
         if (Objects.nonNull(publicationYearToUpdate)) {
-            publicationYearToUpdate.setYear(publicationYear.getYear());
+            publicationYearToUpdate.setYear(publicationYearDTO.getYear());
             publicationYearRepository.save(publicationYearToUpdate);
-            return publicationYearToUpdate;
         }
-        return publicationYearToUpdate;
+
+        return PublicationYearMapper.toPublicationYearDTO(publicationYearToUpdate);
     }
 }

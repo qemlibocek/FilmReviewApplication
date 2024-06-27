@@ -3,7 +3,9 @@ package com.example.filmreviewapplication.mapper;
 import com.example.filmreviewapplication.dto.UserProfileDTO;
 import com.example.filmreviewapplication.model.entity.UserProfile;
 import com.example.filmreviewapplication.model.entity.UserType;
+import org.springframework.stereotype.Component;
 
+@Component
 public class UserProfileMapper {
 
     public static UserProfileDTO toUserProfileDTO(UserProfile userProfile) {

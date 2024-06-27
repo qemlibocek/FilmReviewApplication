@@ -1,5 +1,6 @@
 package com.example.filmreviewapplication.controller;
 
+import com.example.filmreviewapplication.dto.PublicationYearDTO;
 import com.example.filmreviewapplication.model.entity.PublicationYear;
 import com.example.filmreviewapplication.service.PublicationYearService;
 import lombok.AccessLevel;
@@ -19,24 +20,24 @@ public class PublicationYearController {
     PublicationYearService publicationYearService;
 
     @GetMapping
-    public ResponseEntity<List<PublicationYear>> getAllPublicationYears() {
+    public ResponseEntity<List<PublicationYearDTO>> getAllPublicationYears() {
 
-        List<PublicationYear> publicationYearList = publicationYearService.getAllPublicationYears();
-        return ResponseEntity.ok().body(publicationYearList);
+        List<PublicationYearDTO> publicationYearListDTO = publicationYearService.getAllPublicationYears();
+        return ResponseEntity.ok().body(publicationYearListDTO);
     }
 
     @GetMapping("/id")
-    public ResponseEntity<PublicationYear> getPublicationYearById(@RequestParam Long id) {
+    public ResponseEntity<PublicationYearDTO> getPublicationYearById(@RequestParam Long id) {
 
-        PublicationYear publicationYear = publicationYearService.getPublicationYearById(id);
-        return ResponseEntity.ok().body(publicationYear);
+        PublicationYearDTO publicationYearDTO = publicationYearService.getPublicationYearById(id);
+        return ResponseEntity.ok().body(publicationYearDTO);
     }
 
     @PutMapping
-    public ResponseEntity<PublicationYear> updatePublicationYear(@RequestBody PublicationYear publicationYear) {
+    public ResponseEntity<PublicationYearDTO> updatePublicationYear(@RequestBody PublicationYearDTO publicationYearDTO) {
 
-        PublicationYear newPubYear = publicationYearService.updatePublicationYear(publicationYear, publicationYear.getId());
-        return ResponseEntity.ok().body(newPubYear);
+        PublicationYearDTO newPubYearDTO = publicationYearService.updatePublicationYear(publicationYearDTO, publicationYearDTO.getId());
+        return ResponseEntity.ok().body(newPubYearDTO);
     }
 
     @DeleteMapping
@@ -47,10 +48,10 @@ public class PublicationYearController {
     }
 
     @PostMapping
-    public ResponseEntity<PublicationYear> createPublicationYear(@RequestBody PublicationYear publicationYear) {
+    public ResponseEntity<PublicationYearDTO> createPublicationYear(@RequestBody PublicationYearDTO publicationYearDTO) {
 
-        PublicationYear newPubYear = publicationYearService.createPublicationYear(publicationYear);
-        return ResponseEntity.ok().body(newPubYear);
+        PublicationYearDTO newPubYearDTO = publicationYearService.createPublicationYear(publicationYearDTO);
+        return ResponseEntity.ok().body(newPubYearDTO);
     }
 
 }

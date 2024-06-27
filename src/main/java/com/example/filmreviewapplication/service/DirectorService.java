@@ -1,7 +1,11 @@
 package com.example.filmreviewapplication.service;
 
+import com.example.filmreviewapplication.dto.DirectorDTO;
+import com.example.filmreviewapplication.mapper.DirectorMapper;
 import com.example.filmreviewapplication.model.entity.Director;
+import com.example.filmreviewapplication.model.entity.Film;
 import com.example.filmreviewapplication.repository.DirectorRepository;
+import com.example.filmreviewapplication.repository.FilmRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -10,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
@@ -19,22 +24,32 @@ import java.util.Objects;
 public class DirectorService {
 
     DirectorRepository directorRepository;
+    FilmRepository filmRepository;
 
-    public List<Director> getAllDirectors() {
+    public List<DirectorDTO> getAllDirectors() {
 
-        return directorRepository.findAll();
+        return DirectorMapper.toListDirectorDTO(directorRepository.findAll());
     }
 
-    public Director getDirectorById(Long id) {
+    public DirectorDTO getDirectorById(Long id) {
 
-        return directorRepository.findById(id)
-                .orElse(null);
+        Director director = directorRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Director not found"));
 
+        return DirectorMapper.toDirectorDTO(director);
     }
 
-    public Director createDirector(Director director) {
+    public DirectorDTO createDirector(DirectorDTO directorDTO) {
 
-        return directorRepository.save(director);
+        List<Film> films = directorDTO.getFilmIds().stream()
+                .map(filmId -> filmRepository.findById(filmId)
+                        .orElseThrow(() -> new RuntimeException("Film not found")))
+                .toList();
+
+        Director director = DirectorMapper.toEntity(directorDTO, films);
+        director = directorRepository.save(director);
+
+        return DirectorMapper.toDirectorDTO(director);
     }
 
     public void deleteDirectorById(Long id) {
@@ -45,17 +60,16 @@ public class DirectorService {
         directorRepository.save(director);
     }
 
-    public Director updateDirector(Long id, Director director) {
+    public DirectorDTO updateDirector(Long id, DirectorDTO directorDTO) {
 
         var directorForUpdate = directorRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Director not found"));
 
         if (Objects.nonNull(directorForUpdate)) {
-            directorForUpdate.setName(director.getName());
-            directorForUpdate.setSurname(director.getSurname());
+            directorForUpdate.setName(directorDTO.getName());
+            directorForUpdate.setSurname(directorDTO.getSurname());
             directorRepository.save(directorForUpdate);
-            return directorForUpdate;
         }
-        return directorForUpdate;
+        return DirectorMapper.toDirectorDTO(directorForUpdate);
     }
 }

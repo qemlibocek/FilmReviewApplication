@@ -1,5 +1,6 @@
 package com.example.filmreviewapplication.controller;
 
+import com.example.filmreviewapplication.dto.FilmDTO;
 import com.example.filmreviewapplication.model.entity.Film;
 import com.example.filmreviewapplication.service.FilmService;
 import lombok.AccessLevel;
@@ -19,35 +20,31 @@ public class FilmController {
     FilmService filmService;
 
     @GetMapping
-    public ResponseEntity<List<Film>> getAllFilms(){
-
-        List<Film> filmList = filmService.getAllFilms();
+    public ResponseEntity<List<FilmDTO>> getAllFilms() {
+        List<FilmDTO> filmList = filmService.getAllFilms();
         return ResponseEntity.ok().body(filmList);
     }
 
     @PostMapping
-    public ResponseEntity<Film> addFilm(@RequestBody Film film){
-
-        Film newFilm = filmService.addFilm(film);
+    public ResponseEntity<FilmDTO> addFilm(@RequestBody FilmDTO filmDTO) {
+        FilmDTO newFilm = filmService.createFilm(filmDTO);
         return ResponseEntity.ok().body(newFilm);
     }
 
-    @GetMapping("/id")
-    public ResponseEntity<Film> getFilmById(@RequestParam Long id){
-        Film film = filmService.getFilmById(id);
+    @GetMapping("/{id}")
+    public ResponseEntity<FilmDTO> getFilmById(@PathVariable Long id) {
+        FilmDTO film = filmService.getFilmById(id);
         return ResponseEntity.ok().body(film);
     }
 
-    @PutMapping
-    public ResponseEntity<Film> updateFilm(@RequestBody Film film){
-
-        var newFilm = filmService.updateFilm(film, film.getId());
-        return ResponseEntity.ok().body(newFilm);
+    @PutMapping("/{id}")
+    public ResponseEntity<FilmDTO> updateFilm(@PathVariable Long id, @RequestBody FilmDTO filmDTO) {
+        FilmDTO updatedFilm = filmService.updateFilm(filmDTO, id);
+        return ResponseEntity.ok().body(updatedFilm);
     }
 
-    @DeleteMapping
-    public ResponseEntity<Film> deleteFilmById(@RequestParam Long id){
-
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteFilmById(@PathVariable Long id) {
         filmService.deleteFilm(id);
         return ResponseEntity.noContent().build();
     }
