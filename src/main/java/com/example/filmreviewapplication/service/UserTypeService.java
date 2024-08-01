@@ -34,11 +34,18 @@ public class UserTypeService {
         return UserTypeMapper.toListUserTypeDTO(userTypes);
     }
 
-    public UserTypeDTO getUserTypeById(Long id) {
+    public UserTypeDTO getUserTypeDTOById(Long id) {
 
         UserType userType = userTypeRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User type not found"));
         return UserTypeMapper.toUserTypeDTO(userType);
+    }
+
+    public UserType getUserTypeById(Long id) {
+
+        UserType userType = userTypeRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User type not found"));
+        return userType;
     }
 
     public void deleteUserTypeById(Long id) {

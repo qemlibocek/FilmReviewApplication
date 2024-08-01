@@ -3,6 +3,7 @@ package com.example.filmreviewapplication.model.entity;
 import com.example.filmreviewapplication.model.enums.Genre;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.FieldDefaults;
@@ -14,6 +15,7 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
+@Data
 @Table(name = "films")
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Film {
@@ -26,6 +28,7 @@ public class Film {
     String name;
     Float score;
     @Enumerated(EnumType.STRING)
+    @Column(name = "genre", nullable = false)
     Genre genre;
 
     @ManyToOne( cascade = CascadeType.ALL)

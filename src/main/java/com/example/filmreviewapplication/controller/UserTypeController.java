@@ -20,35 +20,35 @@ public class UserTypeController {
     UserTypeService userTypeService;
 
     @PostMapping
-    public ResponseEntity<UserTypeDTO> createUserType(@RequestBody UserTypeDTO userTypeDto) {
+    public ResponseEntity<?> createUserType(@RequestBody UserTypeDTO userTypeDto) {
 
         var newUserType = userTypeService.createUserType(userTypeDto);
         return ResponseEntity.ok().body(newUserType);
     }
 
-    @GetMapping({"/id"})
-    public ResponseEntity<UserTypeDTO> getUserTypeById(@RequestParam Long id) {
+    @GetMapping({"/byId/id"})
+    public ResponseEntity<?> getUserTypeById(@RequestParam Long id) {
 
-        var userType = userTypeService.getUserTypeById(id);
+        var userType = userTypeService.getUserTypeDTOById(id);
         return ResponseEntity.ok().body(userType);
     }
 
     @GetMapping
-    public ResponseEntity<List<UserTypeDTO>> getAllUserTypes() {
+    public ResponseEntity<List<?>> getAllUserTypes() {
 
         var userTypesList = userTypeService.getAllUserTypes();
         return ResponseEntity.ok().body(userTypesList);
     }
 
     @DeleteMapping
-    public ResponseEntity<UserType> deleteUserTypeById(@RequestParam Long id) {
+    public ResponseEntity<?> deleteUserTypeById(@RequestParam Long id) {
 
         userTypeService.deleteUserTypeById(id);
         return ResponseEntity.noContent().build();
     }
 
     @PutMapping
-    public ResponseEntity<UserTypeDTO> updateUserType(@RequestBody UserTypeDTO userTypeDto) {
+    public ResponseEntity<?> updateUserType(@RequestBody UserTypeDTO userTypeDto) {
 
        var newUserType = userTypeService.updateUserType(userTypeDto.getUser_types_id(), userTypeDto);
        return ResponseEntity.ok().body(newUserType);

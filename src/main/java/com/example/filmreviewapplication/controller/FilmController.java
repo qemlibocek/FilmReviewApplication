@@ -20,30 +20,29 @@ public class FilmController {
     FilmService filmService;
 
     @GetMapping
-    public ResponseEntity<List<FilmDTO>> getAllFilms() {
+    public ResponseEntity<List<?>> getAllFilms() {
         List<FilmDTO> filmList = filmService.getAllFilms();
         return ResponseEntity.ok().body(filmList);
     }
 
-    @PostMapping
-    public ResponseEntity<FilmDTO> addFilm(@RequestBody FilmDTO filmDTO) {
+    @PostMapping()
+    public ResponseEntity<?> addFilm(@RequestBody FilmDTO filmDTO) {
         FilmDTO newFilm = filmService.createFilm(filmDTO);
         return ResponseEntity.ok().body(newFilm);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<FilmDTO> getFilmById(@PathVariable Long id) {
-        FilmDTO film = filmService.getFilmById(id);
-        return ResponseEntity.ok().body(film);
+    @GetMapping("/byId/{id}")
+    public ResponseEntity<?> getFilmById(@PathVariable Long id) {
+        return ResponseEntity.ok().body(filmService.getFilmById(id));
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<FilmDTO> updateFilm(@PathVariable Long id, @RequestBody FilmDTO filmDTO) {
+    @PutMapping("/byId/{id}")
+    public ResponseEntity<?> updateFilm(@PathVariable Long id, @RequestBody FilmDTO filmDTO) {
         FilmDTO updatedFilm = filmService.updateFilm(filmDTO, id);
         return ResponseEntity.ok().body(updatedFilm);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/byId/{id}")
     public ResponseEntity<Void> deleteFilmById(@PathVariable Long id) {
         filmService.deleteFilm(id);
         return ResponseEntity.noContent().build();

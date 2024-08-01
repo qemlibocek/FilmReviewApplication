@@ -40,7 +40,6 @@ public class UserProfileMapper {
         userProfile.setPhoneNumber(userProfileDTO.getPhoneNumber());
         userProfile.setCountry(userProfileDTO.getCountry());
         userProfile.setUserType(userType);
-        userProfile.setIsActive(userProfileDTO.getIsActive());
 
         return userProfile;
     }

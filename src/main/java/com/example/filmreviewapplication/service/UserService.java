@@ -10,6 +10,8 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.SQLRestriction;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 
@@ -21,12 +23,14 @@ public class UserService {
 
     UserRepository userRepository;
     UserTypeRepository userTypeRepository;
+    BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public UserProfileDTO createUser(UserProfileDTO userProfileDTO) {
 
         UserType userType = userTypeRepository.findById(userProfileDTO.getUserTypeId())
                 .orElseThrow(() -> new RuntimeException("UserType not found"));
         UserProfile userProfile = UserProfileMapper.toEntity(userProfileDTO, userType);
+        userProfile.setPassword(bCryptPasswordEncoder.encode(userProfile.getPassword()));
         UserProfile savedUserProfile = userRepository.save(userProfile);
         return UserProfileMapper.toUserProfileDTO(savedUserProfile);
     }
@@ -38,11 +42,18 @@ public class UserService {
         return UserProfileMapper.toUserProfileDTO(userProfile);
     }
 
-    public UserProfileDTO getUserProfileByUsername(String username) {
+    public UserProfileDTO getUserProfileDTOByUsername(String username) {
 
         UserProfile userProfile = userRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User not found"));
         return UserProfileMapper.toUserProfileDTO(userProfile);
+    }
+
+    public UserProfile getUserProfileByUsername(String username){
+
+        UserProfile userProfile = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        return userProfile;
     }
 
     public UserProfileDTO getUserProfileByPhoneNumber(String phoneNumber) {

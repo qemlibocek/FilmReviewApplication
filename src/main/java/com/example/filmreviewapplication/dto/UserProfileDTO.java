@@ -1,9 +1,6 @@
 package com.example.filmreviewapplication.dto;
 
-import com.example.filmreviewapplication.model.entity.UserType;
-import jakarta.persistence.Column;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
 
@@ -20,5 +17,6 @@ public class UserProfileDTO {
     Integer age;
     Long id;
     Long userTypeId;
-    Boolean isActive;
+
+
 }

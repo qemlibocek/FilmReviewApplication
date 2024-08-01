@@ -5,14 +5,16 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+
 import java.time.LocalDateTime;
 
 @Entity
 @Getter
 @Setter
+@Data
 @Table(name = "user_profiles")
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class UserProfile {
+public class UserProfile  {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,7 +33,6 @@ public class UserProfile {
     @Column(unique = true)
     String phoneNumber;
     String country;
-
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_types_id", nullable = false)
     UserType userType;
@@ -43,5 +44,4 @@ public class UserProfile {
     LocalDateTime updatedAt;
 
     Boolean isActive = true;
-
 }

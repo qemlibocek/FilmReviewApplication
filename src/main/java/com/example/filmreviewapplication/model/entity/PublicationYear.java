@@ -3,6 +3,7 @@ package com.example.filmreviewapplication.model.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import lombok.AccessLevel;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.FieldDefaults;
@@ -15,6 +16,7 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
+@Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Table(name = "publication_years")
 public class PublicationYear {

@@ -1,6 +1,6 @@
 package com.example.filmreviewapplication.controller;
 
-import com.example.filmreviewapplication.model.entity.Director;
+import com.example.filmreviewapplication.dto.DirectorDTO;
 import com.example.filmreviewapplication.service.DirectorService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -19,37 +19,32 @@ public class DirectorController {
     DirectorService directorService;
 
     @GetMapping
-    public ResponseEntity<List<Director>> getAllDirectors(){
-
-        List<Director> directorList = directorService.getAllDirectors();
+    public ResponseEntity<List<?>> getAllDirectors() {
+        List<DirectorDTO> directorList = directorService.getAllDirectors();
         return ResponseEntity.ok().body(directorList);
     }
 
-    @PutMapping
-    public ResponseEntity<Director> updateDirector(@RequestBody Director director){
-
-        var newDirector = directorService.updateDirector(director.getId(), director);
-        return ResponseEntity.ok().body(newDirector);
-    }
-
-    @GetMapping("/id")
-    public ResponseEntity<Director> getDirectorById(@RequestParam Long id){
-
-        var director = directorService.getDirectorById(id);
+    @GetMapping("/byId/{id}")
+    public ResponseEntity<?> getDirectorById(@PathVariable Long id) {
+        DirectorDTO director = directorService.getDirectorById(id);
         return ResponseEntity.ok().body(director);
     }
 
-    @DeleteMapping
-    public ResponseEntity<Director> deleteDirector(@RequestParam Long id){
-
-        directorService.deleteDirectorById(id);
-        return ResponseEntity.notFound().build();
+    @PostMapping
+    public ResponseEntity<?> createDirector(@RequestBody DirectorDTO directorDTO) {
+        DirectorDTO newDirector = directorService.createDirector(directorDTO);
+        return ResponseEntity.ok().body(newDirector);
     }
 
-    @PostMapping
-    public ResponseEntity<Director> createDirector(@RequestBody Director director){
+    @PutMapping("/{id}")
+    public ResponseEntity<DirectorDTO> updateDirector(@PathVariable Long id, @RequestBody DirectorDTO directorDTO) {
+        DirectorDTO updatedDirector = directorService.updateDirector(id, directorDTO);
+        return ResponseEntity.ok().body(updatedDirector);
+    }
 
-        var directorForCreation = directorService.createDirector(director);
-        return ResponseEntity.ok().body(directorForCreation);
+    @DeleteMapping("/byId/{id}")
+    public ResponseEntity<Void> deleteDirectorById(@PathVariable Long id) {
+        directorService.deleteDirectorById(id);
+        return ResponseEntity.noContent().build();
     }
 }

@@ -1,12 +1,10 @@
 package com.example.filmreviewapplication.controller;
 
 import com.example.filmreviewapplication.dto.UserProfileDTO;
-import com.example.filmreviewapplication.model.entity.UserProfile;
 import com.example.filmreviewapplication.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.AccessLevel;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,47 +16,42 @@ public class UserController {
 
     UserService userService;
 
-    @PostMapping
+    @PostMapping("/public/reg")
 
-    public ResponseEntity<UserProfileDTO> createUserProfile(@RequestBody UserProfileDTO userProfileDto) {
+    public ResponseEntity<?> createUserProfile(@RequestBody UserProfileDTO userProfileDto) {
 
         var createdUserProfile = userService.createUser(userProfileDto);
         return ResponseEntity.ok().body(createdUserProfile);
     }
 
-    @GetMapping("/byId")
+    @GetMapping("/byId/{id}")
+    public ResponseEntity<?> getUserProfileById(@PathVariable Long id){
 
-    public ResponseEntity<UserProfileDTO> getUserProfileById(@RequestParam Long id){
-
-        UserProfileDTO userProfileDto = userService.getUserProfileById(id);
-        return ResponseEntity.ok().body(userProfileDto);
+        return ResponseEntity.ok().body(userService.getUserProfileById(id));
     }
 
-    @GetMapping("/byUsername")
+    @GetMapping("/byUsername/{username}")
+    public ResponseEntity<?> getUserProfileByUsername(@PathVariable String username) {
 
-    public ResponseEntity<UserProfileDTO> getUserProfileByUsername(@RequestParam String username){
-
-        UserProfileDTO userProfileDTO = userService.getUserProfileByUsername(username);
-        return ResponseEntity.ok().body(userProfileDTO);
+        return ResponseEntity.ok().body(userService.getUserProfileByUsername(username));
     }
 
-    @GetMapping("/byPhoneNumber")
+    @GetMapping("/byPhoneNumber/{phoneNumber}")
 
-    public ResponseEntity<UserProfileDTO> getUserProfileByPhoneNumber(@RequestParam String phoneNumber){
+    public ResponseEntity<?> getUserProfileByPhoneNumber(@PathVariable String phoneNumber){
 
-        UserProfileDTO userProfileDTO = userService.getUserProfileByPhoneNumber(phoneNumber);
-        return ResponseEntity.ok().body(userProfileDTO);
+        return ResponseEntity.ok().body(userService.getUserProfileByPhoneNumber(phoneNumber));
     }
 
-    @DeleteMapping("/byId")
+    @DeleteMapping("/byId/{id}")
 
-    public ResponseEntity<Void> deleteUserProfileById(@RequestParam Long id){
+    public ResponseEntity<Void> deleteUserProfileById(@PathVariable Long id){
 
         userService.deleteUserById(id);
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping
+    @PutMapping("/update")
     public ResponseEntity<Void> updateUserProfile(@RequestBody UserProfileDTO userProfileDto){
 
         userService.updateUser(userProfileDto.getId(), userProfileDto);

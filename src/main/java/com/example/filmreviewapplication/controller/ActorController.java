@@ -24,10 +24,9 @@ public class ActorController {
         return ResponseEntity.ok().body(actorList);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<ActorDTO> getActorById(@PathVariable Long id) {
-        ActorDTO actor = actorService.getActorById(id);
-        return ResponseEntity.ok().body(actor);
+    @GetMapping("/byId/{id}")
+    public ResponseEntity<?> getActorById(@PathVariable Long id) {
+        return ResponseEntity.ok().body(actorService.getActorById(id));
     }
 
     @PutMapping("/{id}")
@@ -42,7 +41,7 @@ public class ActorController {
         return ResponseEntity.ok().body(createdActor);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/byId/{id}")
     public ResponseEntity<Void> deleteActor(@PathVariable Long id) {
         actorService.deleteActor(id);
         return ResponseEntity.noContent().build();
