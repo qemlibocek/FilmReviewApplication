@@ -1,6 +1,7 @@
 package com.example.filmreviewapplication.service;
 
 import com.example.filmreviewapplication.dto.DirectorDTO;
+import com.example.filmreviewapplication.exception.DirectorNotFoundException;
 import com.example.filmreviewapplication.mapper.DirectorMapper;
 import com.example.filmreviewapplication.model.entity.Director;
 import com.example.filmreviewapplication.model.entity.Film;
@@ -33,7 +34,7 @@ public class DirectorService {
     public DirectorDTO getDirectorById(Long id) {
 
         Director director = directorRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Director not found"));
+                .orElseThrow(DirectorNotFoundException::new);
 
         return DirectorMapper.toDirectorDTO(director);
     }
@@ -42,7 +43,7 @@ public class DirectorService {
 
         List<Film> films = directorDTO.getFilmIds().stream()
                 .map(filmId -> filmRepository.findById(filmId)
-                        .orElseThrow(() -> new RuntimeException("Film not found")))
+                        .orElseThrow(DirectorNotFoundException::new))
                 .toList();
 
         Director director = DirectorMapper.toEntity(directorDTO, films);
@@ -54,7 +55,7 @@ public class DirectorService {
     public void deleteDirectorById(Long id) {
 
         var director = directorRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Director not found"));
+                .orElseThrow(DirectorNotFoundException::new);
         director.setIsActive(false);
         directorRepository.save(director);
     }
@@ -62,7 +63,7 @@ public class DirectorService {
     public DirectorDTO updateDirector(Long id, DirectorDTO directorDTO) {
 
         var directorForUpdate = directorRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Director not found"));
+                .orElseThrow(DirectorNotFoundException::new);
 
         if (Objects.nonNull(directorForUpdate)) {
             directorForUpdate.setName(directorDTO.getName());

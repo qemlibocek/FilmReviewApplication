@@ -1,6 +1,7 @@
 package com.example.filmreviewapplication.service;
 
 import com.example.filmreviewapplication.dto.UserTypeDTO;
+import com.example.filmreviewapplication.exception.UserTypeNotFoundException;
 import com.example.filmreviewapplication.mapper.UserTypeMapper;
 import com.example.filmreviewapplication.model.entity.UserType;
 import com.example.filmreviewapplication.repository.UserTypeRepository;
@@ -37,14 +38,14 @@ public class UserTypeService {
     public UserTypeDTO getUserTypeDTOById(Long id) {
 
         UserType userType = userTypeRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("User type not found"));
+                .orElseThrow(UserTypeNotFoundException::new);
         return UserTypeMapper.toUserTypeDTO(userType);
     }
 
     public UserType getUserTypeById(Long id) {
 
         UserType userType = userTypeRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("User type not found"));
+                .orElseThrow(UserTypeNotFoundException::new);
         return userType;
     }
 
@@ -53,7 +54,7 @@ public class UserTypeService {
         UserType userTypeToDelete = userTypeRepository
 
                 .findById(id)
-                .orElseThrow(() -> new RuntimeException("User type not found"));
+                .orElseThrow(UserTypeNotFoundException::new);
 
         userTypeToDelete.setIsActive(false);
         userTypeRepository.save(userTypeToDelete);
@@ -64,7 +65,7 @@ public class UserTypeService {
 
         UserType userTypeToUpdate = userTypeRepository
                 .findById(id)
-                .orElseThrow(() -> new RuntimeException("User type not found"));
+                .orElseThrow(UserTypeNotFoundException::new);
 
         if (Objects.nonNull(userTypeToUpdate)) {
 

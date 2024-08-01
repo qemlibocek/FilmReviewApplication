@@ -1,6 +1,8 @@
 package com.example.filmreviewapplication.service;
 
 import com.example.filmreviewapplication.dto.UserProfileDTO;
+import com.example.filmreviewapplication.exception.UserNotFoundException;
+import com.example.filmreviewapplication.exception.UserTypeNotFoundException;
 import com.example.filmreviewapplication.mapper.UserProfileMapper;
 import com.example.filmreviewapplication.model.entity.UserProfile;
 import com.example.filmreviewapplication.model.entity.UserType;
@@ -28,7 +30,7 @@ public class UserService {
     public UserProfileDTO createUser(UserProfileDTO userProfileDTO) {
 
         UserType userType = userTypeRepository.findById(userProfileDTO.getUserTypeId())
-                .orElseThrow(() -> new RuntimeException("UserType not found"));
+                .orElseThrow(UserTypeNotFoundException::new);
         UserProfile userProfile = UserProfileMapper.toEntity(userProfileDTO, userType);
         userProfile.setPassword(bCryptPasswordEncoder.encode(userProfile.getPassword()));
         UserProfile savedUserProfile = userRepository.save(userProfile);
@@ -38,33 +40,33 @@ public class UserService {
     public UserProfileDTO getUserProfileById(Long id) {
 
         UserProfile userProfile = userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(UserNotFoundException::new);
         return UserProfileMapper.toUserProfileDTO(userProfile);
     }
 
     public UserProfileDTO getUserProfileDTOByUsername(String username) {
 
         UserProfile userProfile = userRepository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(UserNotFoundException::new);
         return UserProfileMapper.toUserProfileDTO(userProfile);
     }
 
     public UserProfile getUserProfileByUsername(String username){
 
         UserProfile userProfile = userRepository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(UserNotFoundException::new);
         return userProfile;
     }
 
     public UserProfileDTO getUserProfileByPhoneNumber(String phoneNumber) {
         UserProfile userProfile = userRepository.findByPhoneNumber(phoneNumber)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(UserNotFoundException::new);
         return UserProfileMapper.toUserProfileDTO(userProfile);
     }
 
     public void deleteUserById(Long id) {
         var userProfile = userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(UserNotFoundException::new);
         userProfile.setIsActive(false);
         userRepository.save(userProfile);
     }
@@ -82,6 +84,6 @@ public class UserService {
                     existingUser.setUsername(updatedUserProfileDTO.getUsername());
                     return userRepository.save(existingUser);
                 })
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(UserNotFoundException::new);
     }
 }

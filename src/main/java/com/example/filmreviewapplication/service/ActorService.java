@@ -1,6 +1,7 @@
 package com.example.filmreviewapplication.service;
 
 import com.example.filmreviewapplication.dto.ActorDTO;
+import com.example.filmreviewapplication.exception.ActorNotFoundException;
 import com.example.filmreviewapplication.mapper.ActorMapper;
 import com.example.filmreviewapplication.model.entity.Actor;
 import com.example.filmreviewapplication.model.entity.Film;
@@ -31,7 +32,7 @@ public class ActorService {
     public ActorDTO createActor(ActorDTO actorDTO) {
         List<Film> films = actorDTO.getFilmIds().stream()
                 .map(filmId -> filmRepository.findById(filmId)
-                        .orElseThrow(() -> new RuntimeException("Film not found")))
+                        .orElseThrow(ActorNotFoundException::new))
                 .toList();
 
         Actor actor = ActorMapper.toEntity(actorDTO, films);
@@ -41,24 +42,24 @@ public class ActorService {
 
     public ActorDTO getActorById(Long id) {
         Actor actor = actorRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Actor not found"));
+                .orElseThrow(ActorNotFoundException::new);
         return ActorMapper.toActorDTO(actor);
     }
 
     public void deleteActor(Long id) {
         var actor = actorRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Actor not found"));
+                .orElseThrow(ActorNotFoundException::new);
         actor.setIsActive(false);
         actorRepository.save(actor);
     }
 
     public ActorDTO updateActor(Long id, ActorDTO actorDTO) {
         var actorForUpdate = actorRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Actor not found"));
+                .orElseThrow(ActorNotFoundException::new);
 
         List<Film> films = actorDTO.getFilmIds().stream()
                 .map(filmId -> filmRepository.findById(filmId)
-                        .orElseThrow(() -> new RuntimeException("Film not found")))
+                        .orElseThrow(ActorNotFoundException::new))
                 .collect(Collectors.toList());
 
         if (Objects.nonNull(actorForUpdate)) {

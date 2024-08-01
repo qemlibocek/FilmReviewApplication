@@ -1,6 +1,10 @@
 package com.example.filmreviewapplication.service;
 
 import com.example.filmreviewapplication.dto.FilmDTO;
+import com.example.filmreviewapplication.exception.ActorNotFoundException;
+import com.example.filmreviewapplication.exception.DirectorNotFoundException;
+import com.example.filmreviewapplication.exception.FilmNotFoundException;
+import com.example.filmreviewapplication.exception.PubYearNotFoundException;
 import com.example.filmreviewapplication.mapper.FilmMapper;
 import com.example.filmreviewapplication.model.entity.Actor;
 import com.example.filmreviewapplication.model.entity.Director;
@@ -39,12 +43,12 @@ public class FilmService {
 
     public FilmDTO createFilm(FilmDTO filmDTO) {
         PublicationYear publicationYear = publicationYearRepository.findById(filmDTO.getPublicationYearId())
-                .orElseThrow(() -> new RuntimeException("PublicationYear not found"));
+                .orElseThrow(PubYearNotFoundException::new);
         Director director = directorRepository.findById(filmDTO.getDirectorId())
-                .orElseThrow(() -> new RuntimeException("Director not found"));
+                .orElseThrow(DirectorNotFoundException::new);
         List<Actor> actors = filmDTO.getActorIds().stream()
                 .map(actorId -> actorRepository.findById(actorId)
-                        .orElseThrow(() -> new RuntimeException("Actor not found")))
+                        .orElseThrow(ActorNotFoundException::new))
                 .collect(Collectors.toList());
 
         Film film = FilmMapper.toEntity(filmDTO, publicationYear, director, actors);
@@ -54,22 +58,22 @@ public class FilmService {
 
     public FilmDTO getFilmById(Long id) {
         Film film = filmRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Film not found"));
+                .orElseThrow(FilmNotFoundException::new);
         return FilmMapper.toFilmDTO(film);
     }
 
     public FilmDTO updateFilm(FilmDTO filmDTO, Long id) {
         var filmToUpdate = filmRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Film not found"));
+                .orElseThrow(FilmNotFoundException::new);
 
         if (Objects.nonNull(filmToUpdate)) {
             PublicationYear publicationYear = publicationYearRepository.findById(filmDTO.getPublicationYearId())
-                    .orElseThrow(() -> new RuntimeException("PublicationYear not found"));
+                    .orElseThrow(PubYearNotFoundException::new);
             Director director = directorRepository.findById(filmDTO.getDirectorId())
-                    .orElseThrow(() -> new RuntimeException("Director not found"));
+                    .orElseThrow(DirectorNotFoundException::new);
             List<Actor> actors = filmDTO.getActorIds().stream()
                     .map(actorId -> actorRepository.findById(actorId)
-                            .orElseThrow(() -> new RuntimeException("Actor not found")))
+                            .orElseThrow(ActorNotFoundException::new))
                     .collect(Collectors.toList());
 
             filmToUpdate.setName(filmDTO.getName());
@@ -87,7 +91,7 @@ public class FilmService {
 
     public void deleteFilm(Long id) {
         var film = filmRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Film not found"));
+                .orElseThrow(FilmNotFoundException::new);
         film.setIsActive(false);
         filmRepository.save(film);
     }

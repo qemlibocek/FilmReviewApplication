@@ -1,6 +1,8 @@
 package com.example.filmreviewapplication.service;
 
 import com.example.filmreviewapplication.dto.PublicationYearDTO;
+import com.example.filmreviewapplication.exception.FilmNotFoundException;
+import com.example.filmreviewapplication.exception.PubYearNotFoundException;
 import com.example.filmreviewapplication.mapper.DirectorMapper;
 import com.example.filmreviewapplication.mapper.PublicationYearMapper;
 import com.example.filmreviewapplication.model.entity.Director;
@@ -34,7 +36,7 @@ public class PublicationYearService {
     public PublicationYearDTO getPublicationYearById(Long id) {
 
         PublicationYear publicationYear = publicationYearRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Publication Year Not Found"));
+                .orElseThrow(PubYearNotFoundException::new);
 
         return PublicationYearMapper.toPublicationYearDTO(publicationYear);
     }
@@ -42,7 +44,7 @@ public class PublicationYearService {
     public PublicationYearDTO createPublicationYear(PublicationYearDTO publicationYearDTO) {
         List<Film> films = publicationYearDTO.getFilmIds().stream()
                 .map(filmId -> filmRepository.findById(filmId)
-                        .orElseThrow(() -> new RuntimeException("Film not found")))
+                        .orElseThrow(FilmNotFoundException::new))
                 .toList();
 
         PublicationYear publicationYear = PublicationYearMapper.toEntity(publicationYearDTO, films);
@@ -54,7 +56,7 @@ public class PublicationYearService {
     public void deletePublicationYear(Long id) {
 
         PublicationYear publicationYear = publicationYearRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Publication Year Not Found"));
+                .orElseThrow(PubYearNotFoundException::new);
 
         publicationYear.setIsActive(false);
         publicationYearRepository.save(publicationYear);
@@ -63,7 +65,7 @@ public class PublicationYearService {
     public PublicationYearDTO updatePublicationYear(PublicationYearDTO publicationYearDTO, Long id) {
 
         PublicationYear publicationYearToUpdate = publicationYearRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Publication Year Not Found"));
+                .orElseThrow(PubYearNotFoundException::new);
 
         if (Objects.nonNull(publicationYearToUpdate)) {
             publicationYearToUpdate.setYear(publicationYearDTO.getYear());
